@@ -12,12 +12,12 @@ function convertStrNums(strNums) {
   const convertedNums = [];
 
   for (let num of strNums) {
-    if (+num === NaN) {
+    const convertedNum = +num;
+    if (Number.isNaN(convertedNum)) {
       throw new BadRequestError(`${num} is not a number`);
     }
-    convertedNums.push(+num);
+    convertedNums.push(convertedNum);
   }
-
   return convertedNums;
 }
 

@@ -18,20 +18,19 @@ const MISSING = "Expected key `nums` with comma-separated list of numbers.";
 /** Finds mean of nums in qs: returns {operation: "mean", result } */
 
 app.get("/mean", function (req, res) {
-
-  console.log("This is our plain req.query:", req.query);
-  console.log("This is the req.query.nums:", req.query.nums);
-
-
-  if(req.query.nums === undefined){
+  if (req.query.nums === undefined || req.query.nums === "") {
     throw new BadRequestError("nums are required");
   }
-  // const nums = req.query.nums.split(",").map((num) => +num);
+
   const splitQueryNums = req.query.nums.split(",")
   const nums = convertStrNums(splitQueryNums);
 
-
   const mean = findMean(nums);
+
+  if (req.headers["content-type"] === 'text/html') {
+    return res.send(mean)
+  };
+
   return res.send({
     response: {
       operation: "mean",
@@ -44,8 +43,19 @@ app.get("/mean", function (req, res) {
 /** Finds median of nums in qs: returns {operation: "median", result } */
 
 app.get("/median", function (req, res) {
-  const nums = req.query.nums.split(",").map((num) => +num);
+  if (req.query.nums === undefined || req.query.nums === "") {
+    throw new BadRequestError("nums are required");
+  }
+
+  const splitQueryNums = req.query.nums.split(",")
+  const nums = convertStrNums(splitQueryNums);
+
   const median = findMedian(nums);
+
+  if (req.headers["content-type"] === 'text/html') {
+    return res.send(mean)
+  };
+
   return res.send({
     response: {
       operation: "median",
@@ -54,11 +64,23 @@ app.get("/median", function (req, res) {
   });
 })
 
+
 /** Finds mode of nums in qs: returns {operation: "mean", result } */
-// TODO: Update to reflect mode
+
 app.get("/mode", function (req, res) {
-  const nums = req.query.nums.split(",").map((num) => +num);
+  if (req.query.nums === undefined || req.query.nums === "") {
+    throw new BadRequestError("nums are required");
+  }
+
+  const splitQueryNums = req.query.nums.split(",")
+  const nums = convertStrNums(splitQueryNums);
+
   const mode = findMode(nums);
+
+  if (req.headers["content-type"] === 'text/html') {
+    return res.send(mean)
+  };
+
   return res.send({
     response: {
       operation: "mode",
